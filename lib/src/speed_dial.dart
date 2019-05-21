@@ -51,8 +51,8 @@ class SpeedDial extends StatefulWidget {
 
   /// Executed when the dial is closed.
   ///
-  /// [dismissed] being `true` indicates that the menu was closed by tapping the background.
-  final void Function(bool dismissed) onClose;
+  /// [source] describes the source from which the menu was closed.
+  final void Function(SpeedDialCloseSource source) onClose;
 
   /// If true user is forced to close dial manually by tapping main button. WARNING: If true, overlay is not rendered.
   final bool closeManually;
@@ -152,14 +152,16 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
     });
   }
 
-  void _toggleChildren({bool dismissed = false}) {
+  void _toggleChildren({@required SpeedDialCloseSource source}) {
+    assert(source != null);
+
     var newValue = !_open;
     setState(() {
       _open = newValue;
     });
     if (newValue && widget.onOpen != null) widget.onOpen();
     _performAnimation();
-    if (!newValue && widget.onClose != null) widget.onClose(dismissed);
+    if (!newValue && widget.onClose != null) widget.onClose(source);
   }
 
   List<Widget> _getChildrenList() {
@@ -191,7 +193,8 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
             labelBackgroundColor: child.labelBackgroundColor,
             onTap: child.onTap,
             toggleChildren: () {
-              if (!widget.closeManually) _toggleChildren();
+              if (!widget.closeManually)
+                _toggleChildren(source: SpeedDialCloseSource.childButton);
             },
             shape: child.shape,
             heroTag: 'speed-dial-child-$index',
@@ -211,7 +214,7 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
       top: _open ? 0.0 : null,
       left: _open ? 0.0 : null,
       child: GestureDetector(
-        onTap: () => _toggleChildren(dismissed: true),
+        onTap: () => _toggleChildren(source: SpeedDialCloseSource.background),
         child: BackgroundOverlay(
           animation: _animation,
           color: widget.overlayColor,
@@ -239,7 +242,7 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
       backgroundColor: widget.backgroundColor,
       foregroundColor: widget.foregroundColor,
       elevation: widget.elevation,
-      callback: _toggleChildren,
+      callback: () => _toggleChildren(source: SpeedDialCloseSource.mainButton),
       child: child,
       heroTag: widget.heroTag,
       shape: widget.shape,
@@ -291,4 +294,10 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
       children: children,
     );
   }
+}
+
+enum SpeedDialCloseSource {
+  mainButton,
+  childButton,
+  background,
 }
