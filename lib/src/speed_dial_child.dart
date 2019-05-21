@@ -15,6 +15,8 @@ class SpeedDialChild {
   final double elevation;
   final VoidCallback onTap;
   final ShapeBorder shape;
+  final bool boxShadow;
+  final EdgeInsets margin;
 
   SpeedDialChild({
     this.label,
@@ -26,5 +28,7 @@ class SpeedDialChild {
     this.elevation,
     this.onTap,
     this.shape,
+    this.boxShadow = true,
+    this.margin = const EdgeInsets.only(right: 18.0),
   });
 }

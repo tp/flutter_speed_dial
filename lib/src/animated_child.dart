@@ -14,6 +14,8 @@ class AnimatedChild extends AnimatedWidget {
   final VoidCallback toggleChildren;
   final ShapeBorder shape;
   final String heroTag;
+  final bool boxShadow;
+  final EdgeInsets margin;
 
   AnimatedChild({
     Key key,
@@ -31,6 +33,8 @@ class AnimatedChild extends AnimatedWidget {
     this.toggleChildren,
     this.shape,
     this.heroTag,
+    this.boxShadow,
+    this.margin,
   }) : super(key: key, listenable: animation);
 
   Widget _renderLabel() {
@@ -38,17 +42,19 @@ class AnimatedChild extends AnimatedWidget {
     if (label != null && visible && animation.value == 62.0) {
       return Container(
         padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
-        margin: EdgeInsets.only(right: 18.0),
+        margin: margin,
         decoration: BoxDecoration(
           color: labelBackgroundColor ?? Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(6.0)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.7),
-              offset: Offset(0.8, 0.8),
-              blurRadius: 2.4,
-            )
-          ],
+          boxShadow: boxShadow
+              ? [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    offset: Offset(0.8, 0.8),
+                    blurRadius: 2.4,
+                  )
+                ]
+              : null,
         ),
         child: Text(label, style: labelStyle),
       );
