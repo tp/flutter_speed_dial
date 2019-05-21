@@ -18,6 +18,9 @@ class SpeedDial extends StatefulWidget {
   /// The curve used to animate the button on scrolling.
   final Curve curve;
 
+  /// The label widget that is shown next to the Floating Action Button when the menu is open.
+  final Widget label;
+
   final String tooltip;
   final String heroTag;
   final Color backgroundColor;
@@ -74,6 +77,7 @@ class SpeedDial extends StatefulWidget {
     this.closeManually = false,
     this.shape = const CircleBorder(),
     this.curve = Curves.linear,
+    this.label,
   });
 
   @override
@@ -250,12 +254,20 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: List.from(fabChildren)
-            ..add(
-              Container(
-                margin: EdgeInsets.only(top: 8.0, right: 2.0),
-                child: animatedFloatingButton,
-              ),
-            ),
+            ..add(Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                if (_open && widget.label != null)
+                  Padding(
+                    padding: EdgeInsets.only(right: 14),
+                    child: widget.label,
+                  ),
+                Container(
+                  margin: EdgeInsets.only(top: 8.0, right: 2.0),
+                  child: animatedFloatingButton,
+                ),
+              ],
+            )),
         ),
       ),
     );
