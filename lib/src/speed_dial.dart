@@ -277,12 +277,12 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final children = widget.closeManually
         ? [
-      _renderButton(),
-    ]
+            _renderButton(),
+          ]
         : [
-      _renderOverlay(),
-      _renderButton(),
-    ];
+            _renderOverlay(),
+            _renderButton(),
+          ];
 
     return Stack(
       alignment: Alignment.bottomRight,
