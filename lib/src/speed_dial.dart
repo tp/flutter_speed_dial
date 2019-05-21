@@ -47,7 +47,9 @@ class SpeedDial extends StatefulWidget {
   final VoidCallback onOpen;
 
   /// Executed when the dial is closed.
-  final VoidCallback onClose;
+  ///
+  /// [dismissed] being `true` indicates that the menu was closed by tapping the background.
+  final void Function(bool dismissed) onClose;
 
   /// If true user is forced to close dial manually by tapping main button. WARNING: If true, overlay is not rendered.
   final bool closeManually;
@@ -146,14 +148,14 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
     });
   }
 
-  void _toggleChildren() {
+  void _toggleChildren({bool dismissed = false}) {
     var newValue = !_open;
     setState(() {
       _open = newValue;
     });
     if (newValue && widget.onOpen != null) widget.onOpen();
     _performAnimation();
-    if (!newValue && widget.onClose != null) widget.onClose();
+    if (!newValue && widget.onClose != null) widget.onClose(dismissed);
   }
 
   List<Widget> _getChildrenList() {
@@ -203,7 +205,7 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
       top: _open ? 0.0 : null,
       left: _open ? 0.0 : null,
       child: GestureDetector(
-        onTap: _toggleChildren,
+        onTap: () => _toggleChildren(dismissed: true),
         child: BackgroundOverlay(
           animation: _animation,
           color: widget.overlayColor,

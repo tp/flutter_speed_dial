@@ -45,7 +45,7 @@ class MyAppState extends State<MyApp> with TickerProviderStateMixin {
       animatedIconTheme: IconThemeData(size: 22.0),
       // child: Icon(Icons.add),
       onOpen: () => print('OPENING DIAL'),
-      onClose: () => print('DIAL CLOSED'),
+      onClose: (_) => print('DIAL CLOSED'),
       visible: _dialVisible,
       curve: Curves.bounceIn,
       children: [
