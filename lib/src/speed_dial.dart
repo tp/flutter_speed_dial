@@ -257,20 +257,26 @@ class _SpeedDialState extends State<SpeedDial> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: List.from(fabChildren)
-            ..add(Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                if (_open && widget.label != null)
-                  Padding(
-                    padding: EdgeInsets.only(right: 14),
-                    child: widget.label,
-                  ),
-                Container(
-                  margin: EdgeInsets.only(top: 8.0, right: 2.0),
-                  child: animatedFloatingButton,
+            ..add(
+              GestureDetector(
+                onTap: () =>
+                    _toggleChildren(source: SpeedDialCloseSource.mainButton),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    if (_open && widget.label != null)
+                      Padding(
+                        padding: EdgeInsets.only(right: 14),
+                        child: widget.label,
+                      ),
+                    Container(
+                      margin: EdgeInsets.only(top: 8.0, right: 2.0),
+                      child: animatedFloatingButton,
+                    ),
+                  ],
                 ),
-              ],
-            )),
+              ),
+            ),
         ),
       ),
     );
